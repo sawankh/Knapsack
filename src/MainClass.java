@@ -98,7 +98,7 @@ public class MainClass {
 			knapsack.solveKnapsack();
 			method_time.stopChrono();
 			
-			result_data.add(createResult(knapsack.getKnapsackSolution(), method_time.getTimeElapsed()));
+			result_data.add(createResult(knapsack.getKnapsackSolution(), method_time.getTimeElapsed(), knapsack.getNumber_objects()));
 		}
 		
 		FileWriter fileWriter = new FileWriter(output_file_name);
@@ -135,7 +135,7 @@ public class MainClass {
 			knapsack.solveKnapsack();
 			method_time.stopChrono();
 			
-			result_data.add(createResult(knapsack.getKnapsackSolution(), method_time.getTimeElapsed()));
+			result_data.add(createResult(knapsack.getKnapsackSolution(), method_time.getTimeElapsed(), knapsack.getNumber_objects()));
 		}
 		
 		FileWriter fileWriter = new FileWriter(output_file_name);
@@ -149,7 +149,7 @@ public class MainClass {
 	 * @param time_elapsed the time_elapsed
 	 * @return the string
 	 */
-	public static String createResult(float solution, long time_elapsed) {
-		return Float.toString(solution) + "\t" + Long.toString(time_elapsed);
+	public static String createResult(float solution, long time_elapsed, int number_objects) {
+		return Float.toString(solution) + "\t" + Long.toString(time_elapsed) + "\t" + Integer.toString(number_objects);
 	}
 }
