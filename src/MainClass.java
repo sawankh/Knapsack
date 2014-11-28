@@ -1,5 +1,4 @@
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -8,6 +7,7 @@ import knapsack.KnapsackGreedy;
 import read_write.FileWriter;
 import read_write.ReadFile;
 import data_parser.KnapsackDataParser;
+import execution_time.Average;
 import execution_time.ExecutionTime;
 
 
@@ -47,6 +47,9 @@ public class MainClass {
 	/** The Constant OUTPUT_GREEDY. */
 	private final static String OUTPUT_GREEDY = "result_greedy.txt";
 	
+	private final static String OUTPUT_AVG_GREEDY = "avg_greedy.txt";
+	
+	private final static String OUTPUT_AVG_DYNAMIC = "avg_dynamic.txt";
 	/**
 	 * The main method.
 	 *
@@ -63,6 +66,10 @@ public class MainClass {
 		//Calculates the time elapsed of all the knapsack cases time give in microseconds
 		getResultKnapsackDinamic(knapsack_dynamic, files, OUTPUT_DYNAMIC);
 		getResultKnapsackGreedy(knapsack_greedy, files, OUTPUT_GREEDY);		
+		
+		//Calculates the average time of each set of problems
+		getAverage(OUTPUT_GREEDY, OUTPUT_AVG_GREEDY);
+		getAverage(OUTPUT_DYNAMIC, OUTPUT_AVG_DYNAMIC);
 		
 		// Succesfull end
 		System.out.println("Files Generated succesfully !");
@@ -140,6 +147,57 @@ public class MainClass {
 		
 		FileWriter fileWriter = new FileWriter(output_file_name);
 		fileWriter.writeContent(result_data);
+	}
+	
+	public static void getAverage(String input_file, String output_file) throws IOException {
+		final int RANGE = 20;
+		
+		ReadFile input = new ReadFile(input_file);
+		input.extractContent();
+		
+		ArrayList<Integer> average_data_time = new ArrayList<Integer>();
+		ArrayList<Integer> average_data_num_objects = new ArrayList<Integer>();
+		ArrayList<String> result = new ArrayList<String>();
+		
+		input.extractTime(average_data_time);
+		input.extractNumObject(average_data_num_objects);
+		
+		Integer [] avg_data_time = arrayListToArray(average_data_time);
+		
+		int time_position = 0;
+		int time_position_end = RANGE;		
+		
+		for (Iterator<Integer> iterator_num_obj = average_data_num_objects.iterator(); iterator_num_obj
+				.hasNext();) {
+			Integer num_object = (Integer) iterator_num_obj.next();
+			ArrayList<Long> time = new ArrayList<Long>();
+			
+			for (int i = time_position; i < time_position_end; i++) {
+				time.add((long) avg_data_time[i]);
+			}
+			
+			time_position += RANGE;
+			time_position_end += RANGE;
+			
+			Average average_t = new Average();
+			average_t.getAverage(time);
+			
+			result.add(createResult(average_t.getAverage_time(), 0, num_object));
+		}
+		FileWriter fileWriter = new FileWriter(output_file);
+		fileWriter.writeContent(result);
+	}
+	
+	
+	/**
+	 * Array list to array.
+	 *
+	 * @param data the data
+	 * @return the integer[]
+	 */
+	public static Integer[] arrayListToArray(ArrayList<Integer> data) {
+		Integer[] result = data.toArray(new Integer[data.size()]);
+		return result;
 	}
 	
 	/**
