@@ -27,7 +27,7 @@ public class KnapsackBB implements IKnapsack {
 	private int[] object_values;
 
 	/** The branch_bound_tree. */
-	private ArrayList<Integer[]> branch_bound_tree;
+	private ArrayList<Branch> branch_bound_tree;
 
 	private int knapsack_solution;
 
@@ -48,7 +48,7 @@ public class KnapsackBB implements IKnapsack {
 		knapsack_capacity = capacity;
 		object_weights = weights;
 		object_values = values;
-		branch_bound_tree = new ArrayList<Integer[]>();
+		branch_bound_tree = new ArrayList<Branch>();
 		knapsack_solution = 0;
 	}
 
