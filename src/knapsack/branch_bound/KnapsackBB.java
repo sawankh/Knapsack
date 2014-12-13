@@ -32,13 +32,16 @@ public class KnapsackBB implements IKnapsack {
 	/** The branch_bound_tree. */
 	private ArrayList<Branch> branch_bound_tree;
 
+	/** The branches_solution. */
 	private ArrayList<Double> branches_solution;
 
 	/** The knapsack_solution. */
 	private double knapsack_solution;
 
+	/** The Constant PICK_OBJECT. */
 	private final static Integer PICK_OBJECT = 1;
 
+	/** The Constant DONT_PICK_OBJECT. */
 	private final static Integer DONT_PICK_OBJECT = 0;
 
 	/**
@@ -117,6 +120,12 @@ public class KnapsackBB implements IKnapsack {
 		cutBranches();
 	}
 
+	/**
+	 * Update solution.
+	 *
+	 * @param branch_0 the branch_0
+	 * @param branch_1 the branch_1
+	 */
 	public void updateSolution(Branch branch_0, Branch branch_1) {
 		if ((branch_0.getWeight() <= knapsack_capacity) && (branch_1.getWeight() <= knapsack_capacity)) {
 			if (branch_0.isLast_node() && branch_1.isLast_node()) {
@@ -150,6 +159,11 @@ public class KnapsackBB implements IKnapsack {
 		}
 	}
 	
+	/**
+	 * Adds the branch.
+	 *
+	 * @param branch the branch
+	 */
 	public void addBranch(Branch branch) {
 		if (branch.getWeight() <= knapsack_capacity) {
 			branch_bound_tree.add(branch);
@@ -189,6 +203,12 @@ public class KnapsackBB implements IKnapsack {
 		branch.setSolution(solution);
 	}
 
+	/**
+	 * Creates the level.
+	 *
+	 * @param position the position
+	 * @param branch_father the branch_father
+	 */
 	public void createLevel(int position, Branch branch_father) {
 		// Branches one intiates to 0 and the other to 1
 		Branch branch_0 = Branch.copyBranch(branch_father);
@@ -215,6 +235,9 @@ public class KnapsackBB implements IKnapsack {
 		
 	}
 
+	/**
+	 * Cut branches.
+	 */
 	public void cutBranches() {
 		Iterator<Branch> iterator = branch_bound_tree.iterator();
 		while (iterator.hasNext()) {
@@ -251,6 +274,7 @@ public class KnapsackBB implements IKnapsack {
 			// Create next level
 			createLevel(branch_max_solution.getLevel(), branch_max_solution);
 			
+			// Cut branches that are not optimal
 			cutBranches();
 			
 			// Remove father branch
@@ -264,6 +288,12 @@ public class KnapsackBB implements IKnapsack {
 
 	}
 
+	/**
+	 * Gets the branch.
+	 *
+	 * @param solution the solution
+	 * @return the branch
+	 */
 	public int getBranch(double solution) {
 		int index = -1;
 		for (Iterator<Branch> iterator = branch_bound_tree.iterator(); iterator.hasNext();) {
@@ -277,6 +307,9 @@ public class KnapsackBB implements IKnapsack {
 		return index;
 	}
 	
+	/**
+	 * Prints the solutions.
+	 */
 	public void printSolutions() {
 		for (Iterator<Double> iterator = branches_solution.iterator(); iterator.hasNext();) {
 			Double type = (Double) iterator.next();
@@ -295,4 +328,33 @@ public class KnapsackBB implements IKnapsack {
 		return (float) knapsack_solution;
 	}
 
+	/**
+	 * @return the knapsack_capacity
+	 */
+	public int getKnapsack_capacity() {
+		return knapsack_capacity;
+	}
+
+	/**
+	 * @return the number_objects
+	 */
+	public int getNumber_objects() {
+		return number_objects;
+	}
+
+	/**
+	 * @return the object_weights
+	 */
+	public int[] getObject_weights() {
+		return object_weights;
+	}
+
+	/**
+	 * @return the object_values
+	 */
+	public int[] getObject_values() {
+		return object_values;
+	}
+
+	
 }

@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import knapsack.KnapsackDinamic;
 import knapsack.KnapsackGreedy;
+import knapsack.branch_bound.KnapsackBB;
 import read_write.FileWriter;
 import read_write.ReadFile;
 import data_parser.KnapsackDataParser;
@@ -37,6 +38,9 @@ public class MainClass {
 	
 	/** The knapsack_greedy. */
 	private static KnapsackGreedy knapsack_greedy;
+	
+	/** The knapsack_bb. */
+	private static KnapsackBB knapsack_bb;
 
 	/** The files. */
 	private static ArrayList<String> files;
@@ -50,6 +54,13 @@ public class MainClass {
 	private final static String OUTPUT_AVG_GREEDY = "avg_greedy.txt";
 	
 	private final static String OUTPUT_AVG_DYNAMIC = "avg_dynamic.txt";
+	
+	/** The Constant OUTPUT_BB. */
+	private final static String OUTPUT_BB = "result_bb.txt";
+	
+	/** The Constant OUTPUT_AVG_BB. */
+	private final static String OUTPUT_AVG_BB = "avg_bb.txt";
+	
 	/**
 	 * The main method.
 	 *
@@ -66,10 +77,12 @@ public class MainClass {
 		//Calculates the time elapsed of all the knapsack cases time give in microseconds
 		getResultKnapsackDinamic(knapsack_dynamic, files, OUTPUT_DYNAMIC);
 		getResultKnapsackGreedy(knapsack_greedy, files, OUTPUT_GREEDY);		
+		getResultKnapsackBB(knapsack_bb, files, OUTPUT_BB);
 		
 		//Calculates the average time of each set of problems
 		getAverage(OUTPUT_GREEDY, OUTPUT_AVG_GREEDY);
 		getAverage(OUTPUT_DYNAMIC, OUTPUT_AVG_DYNAMIC);
+		getAverage(OUTPUT_BB, OUTPUT_AVG_BB);
 		
 		// Succesfull end
 		System.out.println("Files Generated succesfully !");
@@ -99,6 +112,42 @@ public class MainClass {
 			parser.parseData();
 			
 			knapsack = new KnapsackDinamic(parser.getNum_objects(),
+					parser.getKnapsack_capacity(), parser.getObject_values(),
+					parser.getObject_weights());
+			method_time.startChrono();
+			knapsack.solveKnapsack();
+			method_time.stopChrono();
+			
+			result_data.add(createResult(knapsack.getKnapsackSolution(), method_time.getTimeElapsed(), knapsack.getNumber_objects()));
+		}
+		
+		FileWriter fileWriter = new FileWriter(output_file_name);
+		fileWriter.writeContent(result_data);
+	}
+	
+	/**
+	 * Gets the result knapsack bb.
+	 *
+	 * @param knapsack the knapsack
+	 * @param data_files the data_files
+	 * @param output_file_name the output_file_name
+	 * @return the result knapsack bb
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	public static void getResultKnapsackBB(KnapsackBB knapsack, ArrayList<String> data_files, String output_file_name) throws IOException {
+		ArrayList<String> result_data = new ArrayList<String>();
+		
+		for (Iterator<String> iterator = files.iterator(); iterator.hasNext();) {
+			String file_input = (String) iterator.next();
+			MainClass.file = new ReadFile(file_input);
+			file.extractContent();
+
+			ExecutionTime method_time = new ExecutionTime();
+			
+			parser = new KnapsackDataParser(file.getContent());
+			parser.parseData();
+			
+			knapsack = new KnapsackBB(parser.getNum_objects(),
 					parser.getKnapsack_capacity(), parser.getObject_values(),
 					parser.getObject_weights());
 			method_time.startChrono();
