@@ -25,6 +25,14 @@ maximize nSi=1 xivi subject to constraint nSi=1 xiwi ≤ W. It is clear that an 
 * Branch and Bound solution.
     > Branch and bound is a technique used only to solve optimization problems. It is an improvement over exhaustive search, because unlike it, branch and bound constructs candidate solutions one component at a time and evaluates the partly constructed solutions. If no potential values of the remaining components can lead to a solution, the remaining components are not generated at all. This approach makes it possible to solve some large instances of difficult combinatorial problems, though, in the worst case, it still has an exponential complexity.
 
+## Results obtained
+Tested with a test bank that includes problems of size 100 to size 1000 each batch has 20 problems, executed using all three algorithms. Calculated the average time for each batch it can be seen in the following graph.
+
+![Screenshot](graphs/times.png)
+
+On the other hand it has been made another grpah to compare the solutions obtained.
+
+![Screenshot](graphs/results.png)
 
 ## Programming language.
 Java is a general-purpose computer programming language that is concurrent, class-based, object-oriented, and specifically designed to have as few implementation dependencies as possible. It is intended to let application developers "write once, run anywhere" (WORA), meaning that code that runs on one platform does not need to be recompiled to run on another. Java applications are typically compiled to bytecode that can run on any Java virtual machine (JVM) regardless of computer architecture. Java is, as of 2014, one of the most popular programming languages in use, particularly for client-server web applications, with a reported 9 million developers.Java was originally developed by James Gosling at Sun Microsystems (which has since merged into Oracle Corporation) and released in 1995 as a core component of Sun Microsystems' Java platform. The language derives much of its syntax from C and C++, but it has fewer low-level facilities than either of them.
